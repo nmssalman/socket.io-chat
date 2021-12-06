@@ -28,14 +28,11 @@ $(function() {
  //setup maps
  const setMap = (data) =>{
   
-  const location = {lat: parseFloat(data.message.split(',')[0]), lng: parseFloat(data.message.split(',')[1])}
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 11,
-    center: location,
-  });
+  const locationData = {lat: parseFloat(data.message.split(',')[0]), lng: parseFloat(data.message.split(',')[1])}
+
   const marker = new google.maps.Marker({
     position: location,
-    map: map,
+    map: $map,
   });
   
 }
@@ -254,7 +251,8 @@ $(function() {
 
   // Whenever the server emits 'new message', update the chat body
   socket.on('new message', (data) => {
-    setMap(data);
+    // setMap(data);
+    updateMap(data);
      addChatMessage(data);
   });
 

@@ -5,9 +5,11 @@
   <title>Socket.IO Chat Example</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="initMap()">
+ 
   <ul class="pages">
     <li class="chat page">
+      <div style="width: 400px; height: 400px; align-content: center;" id="map"></div>
       <div class="chatArea">
         <ul class="messages"></ul>
       </div>
@@ -20,7 +22,26 @@
       </div>
     </li>
   </ul>
-
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhoQymqKoa7qG2So6AzR0PVBiC1qexUpA&callback=initMap&libraries=&v=weekly"
+  async
+></script>
+<script>
+  function initMap() {
+  // The location of Uluru
+  const uluru = { lat: 53.3961342, lng: -113.5397375 };
+  // The map, centered at Uluru
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 11,
+    center: uluru,
+  });
+  // The marker, positioned at Uluru
+  const marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+  });
+}
+</script>
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/main.js"></script>

@@ -10,7 +10,8 @@ $(function() {
   // Initialize variables
   const $window = $(window);
   const $usernameInput = $('.usernameInput'); // Input for username
-  const $messages = $('.messages');           // Messages area
+  const $messages = $('.messages'); // Messages area
+  const $map = $('.map');          //map area 
   const $inputMessage = $('.inputMessage');   // Input message input box
 
   const $loginPage = $('.login.page');        // The login page
@@ -24,7 +25,20 @@ $(function() {
   let typing = false;
   let lastTypingTime;
   let $currentInput = $usernameInput.focus();
-
+ //setup maps
+ const setMap = (data) =>{
+  
+  const location = {lat: parseFloat(data.message.split(',')[0]), lng: parseFloat(data.message.split(',')[1])}
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 11,
+    center: location,
+  });
+  const marker = new google.maps.Marker({
+    position: location,
+    map: map,
+  });
+  
+}
   const addParticipantsMessage = (data) => {
     let message = '';
     if (data.numUsers === 1) {
@@ -34,6 +48,8 @@ $(function() {
     }
     log(message);
   }
+
+  
 
   // Sets the client's username
   const setUsername = () => {
@@ -136,9 +152,11 @@ $(function() {
     } else {
       $messages.append($el);
     }
-
+    
     $messages[0].scrollTop = $messages[0].scrollHeight;
   }
+
+  
 
   // Prevents input from having injected markup
   const cleanInput = (input) => {
@@ -171,6 +189,7 @@ $(function() {
       return $(this).data('username') === data.username;
     });
   }
+ 
 
   // Gets the color of a username through our hash function
   const getUsernameColor = (username) => {
@@ -232,9 +251,11 @@ $(function() {
     addParticipantsMessage(data);
   });
 
+
   // Whenever the server emits 'new message', update the chat body
   socket.on('new message', (data) => {
-    addChatMessage(data);
+    setMap(data);
+     addChatMessage(data);
   });
 
   // Whenever the server emits 'user joined', log it in the chat body
